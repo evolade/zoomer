@@ -5,6 +5,10 @@ import json
 from playsound import playsound
 import webbrowser
 
+# görüntüyü güzelleştiren python modülü
+from rich.console import Console
+from rich.text import Text 
+
 
 
 
@@ -13,7 +17,7 @@ import webbrowser
 alarmSound = "sound.mp3"
 
 
-
+c = Console()
 
 
 # json yazma
@@ -61,37 +65,37 @@ def takeInput(type):
     jwrite(data)
 
     try:
-        days = input("\n haftanın hangi günleri meeting var\n örnek :\n   pzt sal crs prs cum cmt pzr\n\n (günler arası 1 boşluk bırakın)\n\n > ")
+        days = c.input("\n haftanın hangi günleri meeting var\n örnek :\n   pzt sal crs prs cum cmt pzr\n\n (günler arası [white]1 [red]boşluk bırakın[/])\n\n [bold blue]> ")
     
     except:
-        print("\n türkçe harf hatası")
+        c.print("\n [red]türkçe harf hatası")
 
     if jread("type") == "id":
-        passInput = input("\n meeting password > ")
+        passInput = c.input("\n meeting password [bold blue]> ")
         data["password"] = passInput
 
-    alarm = int(input("\n meeting başlamadan kaç dk önce alarm çalsın > "))
+    alarm = int(c.input("\n meeting başlamadan kaç dk önce alarm çalsın [bold blue]> "))
     arrDays = days.split(" ")
     data["days"] = len(arrDays)
     data["alarm"] = alarm      
     l = 1
     
     print("\n örnek saat: 16:33 ")
-    print(' kaydetmek için ".s"')
+    c.print(" kaydetmek için: [green].s[/]")
 
     for j in range(len(arrDays)):
         data[str(j + 1) + "d"] = str(arrDays[j]) # ayrılmış günleri "data" sözlüğüne kaydetmek
         
         while 1:
 
-            meetingTime = input("\n " + str(arrDays[j]) + " " + str(l) + ". meeting saati > ")
+            meetingTime = c.input("\n " + str(arrDays[j]) + " " + str(l) + ". meeting saati [bold blue]> ")
 
             if meetingTime == ".s":    
-                print("\n kaydedildi")
+                c.print("\n [green]kaydedildi")
                 jwrite(data)            
                 break 
        
-            meetings = input("\n " + str(arrDays[j]) + " " + str(l) + ". meeting " + str(type) + " > ") 
+            meetings = c.input("\n " + str(arrDays[j]) + " " + str(l) + ". meeting " + str(type) + " [bold blue]> ") 
 
             # meeting saatini ve id sini "data" ya kaydetmek         
             data[str(j + 1) + str(l) + "t"] = meetingTime
@@ -112,9 +116,10 @@ def takeInput(type):
 def userInput():
     ringed = False
     i = 1
-    print("\n  Zoomer    v1.0\n\n  © 2021 V Dev")
+    c.print("\n  [bold blue]Zoomer", end = "")
+    print("    v1.1\n\n  © 2021 V Dev")
     while 1:
-        choice = input("\n 1 - çalıştır\n 2 - yeni program\n 3 - programı görüntüle (json)\n 4 - çık \n\n > ")
+        choice = c.input("\n [green]1[/] - çalıştır\n [green]2[/] - yeni program\n [green]3[/] - programı görüntüle (json)\n [green]4[/] - programı sil\n [green]5[/] - çık\n\n [bold blue]> ")
         
         if choice == "1":
 
@@ -179,6 +184,7 @@ def userInput():
                             print(" kalan dakika:", int(mminute) - int(now.strftime("%M")))
 
                             if now.strftime("%M") == mminute:
+                                c.print("\n [bold blue]ID ile katılıyor")
                                 playsound(alarmSound)
                                 playsound(alarmSound)
                                 sleep(5)
@@ -215,6 +221,7 @@ def userInput():
                             print(" kalan dakika:", int(mminute) - int(now.strftime("%M")))
 
                             if now.strftime("%M") == mminute:
+                                c.print("\n [bold blue]link ile katılıyor")
                                 playsound(alarmSound)
                                 playsound(alarmSound)
                                 sleep(5)
@@ -225,13 +232,13 @@ def userInput():
                         sleep(1)
 
             except:
-                print("\n meeting yok")
+                c.print("\n [bold red]meeting yok")
             
         if choice == "2": 
-            confirm = input("\n yeni program oluşturmak eski programı siler, emin misin (e / h) \n\n > ")
+            confirm = c.input("\n yeni program oluşturmak eski programı siler, emin misin ([green]e [white]/ [red]h[/]) \n\n [bold blue]> ")
 
             if confirm == "e":
-                idtype = input("\n 1 - ID ile giriş \n 2 - link ile giriş \n\n > ")
+                idtype = c.input("\n [green]1[/] - ID ile giriş \n [green]2[/] - link ile giriş \n\n [bold blue]> ")
                 
                 if idtype == "1":
                     data["type"] = "id" 
@@ -246,9 +253,24 @@ def userInput():
         
         if choice == "3": 
             f = open("db.json", "r")
-            print("\n\n", f.read(), "\n")
+            print("")
+            print("-" * 50) # programın görünürlüğünü artırmak için 50 tane çizgi
+            print(f.read())
+            print("-" * 50)
         
         if choice == "4":
+            deleteConfirm = c.input("\n programı silmek istediğine emin misin ([green]e [white]/ [red]h[/]) \n\n [bold blue]> ")
+            if deleteConfirm == "e":
+                open('db.json', 'w').close()
+                c.print("\n [green]silindi")
+            else:
+                continue
+            
+            
+            #eraser = {"asd": "abu"}
+            #jwrite(eraser)
+
+        if choice == "5":
             exit()
                 
                 
