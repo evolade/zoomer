@@ -261,7 +261,7 @@ def userInput():
         if choice == "4":
             deleteConfirm = c.input("\n programı silmek istediğine emin misin ([green]e [white]/ [red]h[/]) \n\n [bold blue]> ")
             if deleteConfirm == "e":
-                open('db.json', 'w').close()
+                open('db.json', 'w').close() 
                 c.print("\n [green]silindi")
             else:
                 continue
