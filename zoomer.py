@@ -5,7 +5,7 @@ import json
 from playsound import playsound
 import webbrowser
 
-# görüntüyü güzelleştiren python modülü
+# görüntüysü güzelleştiren python modülü
 from rich.console import Console
 from rich.text import Text 
 
@@ -14,7 +14,7 @@ from rich.text import Text
 
 
 # alarm sesi dosyası
-alarmSound = "sound.mp3"
+alarmSound = "alarm.mp3"
 
 
 c = Console()
