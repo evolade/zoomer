@@ -14,7 +14,7 @@ from rich.text import Text
 
 
 # alarm sesi dosyası
-alarmSound = "alarm.mp3"
+alarmSound = "ring.mp3"
 
 
 c = Console()
